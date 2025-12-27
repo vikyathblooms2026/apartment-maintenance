@@ -3,8 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vikyath Blooms Society Maintenance Tracker</title>
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Maintenance Tracker">
+    
+    <title>Apartment Society Maintenance Tracker v2</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQXBhcnRtZW50IE1haW50ZW5hbmNlIFRyYWNrZXIiLCJzaG9ydF9uYW1lIjoiTWFpbnRlbmFuY2UiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsInRoZW1lX2NvbG9yIjoiIzY2N2VlYSIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBeE1qZ2dNVEk0SWo0OGNtVmpkQ0IzYVdSMGFEMGlNVEk0SWlCb1pXbG5hSFE5SWpFeU9DSWdabWxzYkQwaUl6WTJOMlZsWVNJdlBqd3ZjM1puUGc9PSIsInNpemVzIjoiMTI4eDEyOCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    
     <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5568d3;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --text-primary: #333;
+            --text-secondary: #666;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,60 +36,151 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
+        /* Mobile-first design */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .login-tab.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: -2px;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 30px;
-            text-align: center;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+        .header-left h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
         }
 
-        .header p {
+        .header-left p {
+            font-size: 12px;
             opacity: 0.9;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info .user-name {
+            font-weight: 600;
             font-size: 14px;
+        }
+
+        .user-info .user-role {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         .nav-tabs {
             display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e0e0e0;
+            background: var(--light-bg);
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .nav-tab {
             flex: 1;
-            padding: 15px;
+            min-width: 120px;
+            padding: 15px 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             border: none;
             background: transparent;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
-            color: #666;
+            color: var(--text-secondary);
+            white-space: nowrap;
         }
 
         .nav-tab.active {
             background: white;
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
         }
 
         .nav-tab:hover {
@@ -74,7 +188,7 @@
         }
 
         .content {
-            padding: 30px;
+            padding: 20px;
         }
 
         .tab-content {
@@ -91,16 +205,18 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .setup-section {
-            background: #f8f9fa;
+        .section {
+            background: white;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .setup-section h3 {
-            color: #667eea;
+        .section h3 {
+            color: var(--primary-color);
             margin-bottom: 15px;
+            font-size: 18px;
         }
 
         .form-group {
@@ -111,13 +227,14 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
-            color: #333;
+            color: var(--text-primary);
+            font-size: 14px;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 14px;
             transition: border-color 0.3s;
@@ -125,7 +242,7 @@
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-color);
         }
 
         .btn {
@@ -133,18 +250,19 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
             transition: all 0.3s;
+            display: inline-block;
         }
 
         .btn-primary {
-            background: #667eea;
+            background: var(--primary-color);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
+            background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
@@ -155,13 +273,28 @@
         }
 
         .btn-success {
-            background: #28a745;
+            background: var(--success-color);
             color: white;
         }
 
         .btn-danger {
-            background: #dc3545;
+            background: var(--danger-color);
             color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
         }
 
         .grid-2 {
@@ -176,171 +309,194 @@
             gap: 15px;
         }
 
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h4 {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
         .table-container {
             overflow-x: auto;
-            margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 15px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
+            font-size: 13px;
         }
 
         th, td {
-            padding: 12px;
+            padding: 12px 8px;
             text-align: left;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            background: #f8f9fa;
+            background: var(--light-bg);
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
             position: sticky;
             top: 0;
         }
 
         tr:hover {
-            background: #f8f9fa;
+            background: var(--light-bg);
         }
 
         .status-paid {
-            color: #28a745;
+            color: var(--success-color);
             font-weight: 600;
         }
 
         .status-pending {
-            color: #dc3545;
+            color: var(--danger-color);
             font-weight: 600;
         }
 
         .status-partial {
-            color: #ffc107;
+            color: var(--warning-color);
             font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-info {
+            background: #d1ecf1;
+            color: #0c5460;
         }
 
         .alert {
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
+            border-left: 4px solid;
         }
 
         .alert-info {
             background: #d1ecf1;
-            border-left: 4px solid #0c5460;
+            border-color: #0c5460;
             color: #0c5460;
         }
 
         .alert-warning {
             background: #fff3cd;
-            border-left: 4px solid #856404;
+            border-color: #856404;
             color: #856404;
         }
 
         .alert-success {
             background: #d4edda;
-            border-left: 4px solid #155724;
+            border-color: #155724;
             color: #155724;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .alert-danger {
+            background: #f8d7da;
+            border-color: #721c24;
+            color: #721c24;
         }
 
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .stat-card h4 {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .member-card {
+        .search-filter-bar {
             background: white;
-            border: 1px solid #e0e0e0;
+            padding: 15px;
             border-radius: 8px;
-            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filter-row .form-group {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 0;
+        }
+
+        .history-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
             margin-bottom: 15px;
         }
 
-        .member-card h4 {
-            color: #333;
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .payment-record {
             display: flex;
             justify-content: space-between;
             padding: 10px;
-            background: #f8f9fa;
+            background: var(--light-bg);
             border-radius: 4px;
             margin-top: 10px;
-        }
-
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: monospace;
-            font-size: 13px;
-        }
-
-        .instructions {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .instructions ol {
-            margin-left: 20px;
-        }
-
-        .instructions li {
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-            .grid-2, .grid-3 {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-tab {
-                font-size: 14px;
-                padding: 12px 8px;
-            }
-
-            .content {
-                padding: 15px;
-            }
         }
 
         .loading {
             text-align: center;
             padding: 40px;
-            color: #667eea;
+            color: var(--primary-color);
         }
 
         .spinner {
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border-top: 3px solid var(--primary-color);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -352,219 +508,422 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .excess-amount {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -23px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -19px;
+            top: 15px;
+            width: 2px;
+            height: 100%;
+            background: var(--border-color);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px;
+            }
+
+            .header-left h1 {
+                font-size: 16px;
+            }
+
+            .header-right {
+                gap: 10px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tab {
+                font-size: 12px;
+                padding: 12px 8px;
+            }
+
+            .stat-card .value {
+                font-size: 20px;
+            }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-row .form-group {
+                width: 100%;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            th, td {
+                padding: 8px 4px;
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+        }
+
+        /* PWA Install Banner */
+        .install-banner {
+            background: var(--info-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .install-banner.show {
+            display: block;
+        }
+
+        .install-banner button {
+            background: white;
+            color: var(--info-color);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .comparison-table th {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .highlight-row {
+            background: #fff3cd !important;
+        }
+
+        /* Hidden class for role-based access */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <h2>🏢 Maintenance Tracker</h2>
+            
+            <div class="login-tabs">
+                <button class="login-tab active" onclick="switchLoginTab('admin')">Admin Login</button>
+                <button class="login-tab" onclick="switchLoginTab('member')">Member Login</button>
+            </div>
+
+            <!-- Admin Login -->
+            <div id="adminLogin" class="login-form">
+                <div class="form-group">
+                    <label>Admin Username</label>
+                    <input type="text" id="adminUsername" placeholder="Enter username" value="admin">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password" value="admin123">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="adminLogin()">🔐 Login as Admin</button>
+                <p style="margin-top: 15px; font-size: 12px; color: #999; text-align: center;">
+                    Default: admin / admin123
+                </p>
+            </div>
+
+            <!-- Member Login -->
+            <div id="memberLogin" class="login-form hidden">
+                <div class="form-group">
+                    <label>House Number</label>
+                    <input type="text" id="memberHouseNumber" placeholder="e.g., H001" style="text-transform: uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number (Last 4 digits)</label>
+                    <input type="text" id="memberContact" placeholder="Last 4 digits" maxlength="4">
+                </div>
+                <button class="btn btn-success btn-block" onclick="memberLogin()">👤 Login as Member</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PWA Install Banner -->
+    <div id="installBanner" class="install-banner">
+        <p>📱 Install this app on your phone for quick access!</p>
+        <button onclick="installPWA()">Install</button>
+        <button onclick="dismissInstall()">Later</button>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="container hidden">
         <div class="header">
-            <h1>🏢 Apartment Society Maintenance Tracker</h1>
-            <p>Transparent management for 53 houses</p>
+            <div class="header-left">
+                <h1 id="societyName">🏢 Apartment Maintenance</h1>
+                <p id="headerSubtitle">Transparent Financial Management</p>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-name" id="userName">Admin User</div>
+                    <div class="user-role" id="userRole">Administrator</div>
+                </div>
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
         </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('setup')">⚙️ Setup</button>
-            <button class="nav-tab" onclick="switchTab('admin')">👨‍💼 Admin Panel</button>
-            <button class="nav-tab" onclick="switchTab('members')">👥 Member View</button>
-            <button class="nav-tab" onclick="switchTab('reports')">📊 Reports</button>
+        <div class="nav-tabs" id="navTabs">
+            <!-- Tabs will be dynamically loaded based on user role -->
         </div>
 
         <div class="content">
-            <!-- Setup Tab -->
-            <div id="setup" class="tab-content active">
-                <div class="alert alert-info">
-                    <strong>Welcome!</strong> Follow these steps to set up your apartment maintenance tracking system.
+            <!-- Dashboard Tab (Common) -->
+            <div id="dashboard" class="tab-content active">
+                <div class="stats-grid" id="dashboardStats">
+                    <!-- Stats will be loaded here -->
                 </div>
 
-                <div class="setup-section">
-                    <h3>📋 Step 1: Create Google Sheet</h3>
-                    <div class="instructions">
-                        <ol>
-                            <li>Go to <a href="https://sheets.google.com" target="_blank">Google Sheets</a> and create a new spreadsheet</li>
-                            <li>Name it "Apartment Maintenance Tracker"</li>
-                            <li>Create the following sheets (tabs):
-                                <ul>
-                                    <li><strong>Members</strong> - List of all 53 houses</li>
-                                    <li><strong>MonthlyCharges</strong> - Fixed and variable charges</li>
-                                    <li><strong>Payments</strong> - Payment records</li>
-                                    <li><strong>Config</strong> - Configuration settings</li>
-                                </ul>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-
-                <div class="setup-section">
-                    <h3>🔗 Step 2: Set up Google Sheets API</h3>
-                    <div class="instructions">
-                        <ol>
-                            <li>Go to <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></li>
-                            <li>Create a new project or select existing one</li>
-                            <li>Enable Google Sheets API</li>
-                            <li>Create credentials (API Key)</li>
-                            <li>Make your sheet publicly accessible:
-                                <ul>
-                                    <li>Click "Share" → Change to "Anyone with the link can view"</li>
-                                </ul>
-                            </li>
-                            <li>Copy your Spreadsheet ID from the URL:<br>
-                                <code>https://docs.google.com/spreadsheets/d/<strong>[SPREADSHEET_ID]</strong>/edit</code>
-                            </li>
-                        </ol>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Google Sheets API Key:</label>
-                        <input type="text" id="apiKey" placeholder="Enter your API key">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Spreadsheet ID:</label>
-                        <input type="text" id="spreadsheetId" placeholder="Enter your spreadsheet ID">
-                    </div>
-
-                    <button class="btn btn-primary" onclick="saveConfig()">💾 Save Configuration</button>
-                </div>
-
-                <div class="setup-section">
-                    <h3>🏠 Step 3: Initialize Member Data</h3>
-                    <p>This will create 53 house records in your Google Sheet</p>
-                    
-                    <div class="form-group">
-                        <label>Number of Occupied Houses:</label>
-                        <input type="number" id="occupiedHouses" value="12" min="0" max="53">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Number of Interior Ongoing Houses:</label>
-                        <input type="number" id="interiorHouses" value="0" min="0" max="53">
-                    </div>
-
-                    <button class="btn btn-success" onclick="initializeMembers()">🚀 Initialize Members</button>
-                </div>
-
-                <div class="setup-section">
-                    <h3>💰 Step 4: Set Monthly Charges</h3>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label>Meter Charges (Kaveri):</label>
-                            <input type="number" id="meterCharges" value="500">
-                        </div>
-                        <div class="form-group">
-                            <label>Sanitary Charges (Kaveri):</label>
-                            <input type="number" id="sanitaryCharges" value="8000">
-                        </div>
-                        <div class="form-group">
-                            <label>Other Charges (Kaveri):</label>
-                            <input type="number" id="otherCharges" value="11000">
-                        </div>
-                        <div class="form-group">
-                            <label>SC Borewell (Kaveri):</label>
-                            <input type="number" id="borewellCharges" value="10000">
-                        </div>
-                        <div class="form-group">
-                            <label>Security Salary:</label>
-                            <input type="number" id="securitySalary" value="12000">
-                        </div>
-                        <div class="form-group">
-                            <label>Common Power:</label>
-                            <input type="number" id="commonPower" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label>Water Charges (for occupied/interior):</label>
-                            <input type="number" id="waterCharges" value="2000">
-                        </div>
-                        <div class="form-group">
-                            <label>Diesel (Approx):</label>
-                            <input type="number" id="dieselCharges" value="10000">
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" onclick="saveMonthlyCharges()">💾 Save Monthly Charges</button>
+                <div class="section">
+                    <h3>📊 Quick Overview</h3>
+                    <div id="quickOverview"></div>
                 </div>
             </div>
 
-            <!-- Admin Panel Tab -->
-            <div id="admin" class="tab-content">
-                <div class="alert alert-warning">
-                    <strong>Admin Access:</strong> This panel allows you to manage all aspects of the maintenance system.
+            <!-- Admin: User Management Tab -->
+            <div id="userManagement" class="tab-content">
+                <div class="alert alert-info">
+                    <strong>User Management:</strong> Manage member accounts and access control.
                 </div>
 
+                <div class="section">
+                    <h3>👥 All Members</h3>
+                    
+                    <div class="search-filter-bar">
+                        <div class="filter-row">
+                            <div class="form-group">
+                                <label>Search</label>
+                                <input type="text" id="userSearchInput" placeholder="Search by house or owner name...">
+                            </div>
+                            <div class="form-group">
+                                <label>Filter by Status</label>
+                                <select id="userFilterStatus">
+                                    <option value="">All Status</option>
+                                    <option value="Occupied">Occupied</option>
+                                    <option value="Interior Ongoing">Interior Ongoing</option>
+                                    <option value="Empty">Empty</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Status</label>
+                                <select id="userFilterPayment">
+                                    <option value="">All</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="partial">Partial</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" onclick="applyUserFilters()">🔍 Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>House</th>
+                                    <th>Owner</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Payment Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr>
+                                    <td colspan="6" class="loading">
+                                        <div class="spinner"></div>
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>➕ Add/Edit Member</h3>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>House Number</label>
+                            <input type="text" id="editHouseNumber" readonly style="background: #f0f0f0;">
+                        </div>
+                        <div class="form-group">
+                            <label>Owner Name</label>
+                            <input type="text" id="editOwnerName" placeholder="Enter owner name">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            <input type="text" id="editContact" placeholder="10-digit mobile">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="editEmail" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="editStatus">
+                                <option value="Occupied">Occupied</option>
+                                <option value="Interior Ongoing">Interior Ongoing</option>
+                                <option value="Empty">Empty</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="saveMemberDetails()">💾 Save Changes</button>
+                    <button class="btn btn-secondary" onclick="cancelEdit()">❌ Cancel</button>
+                </div>
+            </div>
+
+            <!-- Admin: Payment Management -->
+            <div id="paymentManagement" class="tab-content">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h4>Total Houses</h4>
-                        <div class="value" id="totalHouses">53</div>
+                        <h4>This Month</h4>
+                        <div class="value" id="thisMonthCollection">₹0</div>
                     </div>
                     <div class="stat-card">
                         <h4>Total Collected</h4>
                         <div class="value" id="totalCollected">₹0</div>
                     </div>
                     <div class="stat-card">
-                        <h4>Total Pending</h4>
+                        <h4>Pending</h4>
                         <div class="value" id="totalPending">₹0</div>
                     </div>
                     <div class="stat-card">
-                        <h4>Collection Rate</h4>
+                        <h4>Collection %</h4>
                         <div class="value" id="collectionRate">0%</div>
                     </div>
                 </div>
 
-                <div class="setup-section">
+                <div class="section">
                     <h3>💳 Record Payment</h3>
                     <div class="grid-3">
                         <div class="form-group">
-                            <label>House Number:</label>
+                            <label>House Number</label>
                             <select id="paymentHouse">
                                 <option value="">Select House</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Amount Paid:</label>
+                            <label>Amount Paid</label>
                             <input type="number" id="paymentAmount" placeholder="Enter amount">
                         </div>
                         <div class="form-group">
-                            <label>Payment Date:</label>
+                            <label>Payment Date</label>
                             <input type="date" id="paymentDate">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Payment Mode:</label>
-                        <select id="paymentMode">
-                            <option value="Cash">Cash</option>
-                            <option value="Online Transfer">Online Transfer</option>
-                            <option value="Cheque">Cheque</option>
-                            <option value="UPI">UPI</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Notes (Optional):</label>
-                        <input type="text" id="paymentNotes" placeholder="e.g., Month of January 2025">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Payment Mode</label>
+                            <select id="paymentMode">
+                                <option value="Cash">Cash</option>
+                                <option value="Online Transfer">Online Transfer</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="UPI">UPI</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Month/Period</label>
+                            <input type="text" id="paymentNotes" placeholder="e.g., January 2025">
+                        </div>
                     </div>
                     <button class="btn btn-success" onclick="recordPayment()">✅ Record Payment</button>
                 </div>
 
-                <div class="setup-section">
-                    <h3>📋 All Members</h3>
-                    <button class="btn btn-primary" onclick="loadAllMembers()">🔄 Refresh Data</button>
-                    <button class="btn btn-secondary" onclick="exportToExcel()">📥 Export to Excel</button>
-                    
+                <div class="section">
+                    <h3>📋 Recent Payments</h3>
                     <div class="table-container">
-                        <table id="adminMembersTable">
+                        <table>
                             <thead>
                                 <tr>
-                                    <th>House #</th>
-                                    <th>Owner Name</th>
-                                    <th>Status</th>
-                                    <th>Monthly Due</th>
-                                    <th>Total Paid</th>
-                                    <th>Balance</th>
-                                    <th>Payment Status</th>
+                                    <th>Date</th>
+                                    <th>House</th>
+                                    <th>Owner</th>
+                                    <th>Amount</th>
+                                    <th>Mode</th>
+                                    <th>Period</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminMembersBody">
+                            <tbody id="recentPaymentsBody">
                                 <tr>
-                                    <td colspan="7" class="loading">
+                                    <td colspan="6" class="loading">
                                         <div class="spinner"></div>
-                                        Loading data...
+                                        Loading recent payments...
                                     </td>
                                 </tr>
                             </tbody>
@@ -573,67 +932,146 @@
                 </div>
             </div>
 
-            <!-- Members View Tab -->
-            <div id="members" class="tab-content">
-                <div class="alert alert-info">
-                    <strong>Member Portal:</strong> Search for your house number to view your maintenance details.
+            <!-- Member: My Account -->
+            <div id="myAccount" class="tab-content">
+                <div class="section">
+                    <h3>🏠 My Account Details</h3>
+                    <div id="memberAccountDetails"></div>
                 </div>
 
-                <div class="setup-section">
-                    <h3>🔍 Find Your House</h3>
-                    <div class="form-group">
-                        <label>Enter House Number:</label>
-                        <input type="text" id="searchHouse" placeholder="e.g., 101, 102, 103...">
-                    </div>
-                    <button class="btn btn-primary" onclick="searchMember()">🔍 Search</button>
+                <div class="section">
+                    <h3>💰 Current Month Charges</h3>
+                    <div id="currentChargesBreakdown"></div>
                 </div>
 
-                <div id="memberDetails" style="display: none;">
-                    <div class="member-card">
-                        <h4>House #<span id="memberHouseNum"></span></h4>
-                        <p><strong>Owner:</strong> <span id="memberOwner"></span></p>
-                        <p><strong>Status:</strong> <span id="memberStatus"></span></p>
-                        <p><strong>Contact:</strong> <span id="memberContact"></span></p>
-                        
-                        <hr style="margin: 20px 0;">
-                        
-                        <h4>Monthly Charges Breakdown</h4>
-                        <div id="chargesBreakdown"></div>
-                        
-                        <hr style="margin: 20px 0;">
-                        
-                        <h4>Payment Summary</h4>
-                        <p><strong>Monthly Due:</strong> ₹<span id="memberMonthlyDue"></span></p>
-                        <p><strong>Total Paid:</strong> ₹<span id="memberTotalPaid"></span></p>
-                        <p><strong>Balance:</strong> <span id="memberBalance"></span></p>
-                        
-                        <hr style="margin: 20px 0;">
-                        
-                        <h4>Payment History</h4>
-                        <div id="paymentHistory"></div>
+                <div class="section">
+                    <h3>📊 Payment Summary</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Monthly Due</h4>
+                            <div class="value" id="myMonthlyDue">₹0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Total Paid</h4>
+                            <div class="value" id="myTotalPaid">₹0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Balance</h4>
+                            <div class="value" id="myBalance">₹0</div>
+                        </div>
+                        <div class="stat-card" id="excessCard" style="display: none;">
+                            <h4>Excess Amount</h4>
+                            <div class="value" id="myExcess">₹0</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Reports Tab -->
-            <div id="reports" class="tab-content">
-                <div class="alert alert-success">
-                    <strong>Reports & Analytics:</strong> Download various reports and view analytics.
+            <!-- Historical Charges (Common) -->
+            <div id="historicalData" class="tab-content">
+                <div class="alert alert-info">
+                    <strong>Historical View:</strong> Track all charges and payments since inception.
                 </div>
 
-                <div class="setup-section">
-                    <h3>📊 Available Reports</h3>
+                <div class="section">
+                    <h3>📅 Filter Historical Data</h3>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>From Date</label>
+                            <input type="month" id="historyFromDate">
+                        </div>
+                        <div class="form-group">
+                            <label>To Date</label>
+                            <input type="month" id="historyToDate">
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-primary btn-block" onclick="loadHistoricalData()">🔍 Load Data</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📈 Payment Timeline</h3>
+                    <div class="timeline" id="paymentTimeline">
+                        <!-- Timeline will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📊 Monthly Comparison</h3>
+                    <div class="table-container">
+                        <table class="comparison-table" id="monthlyComparisonTable">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Due Amount</th>
+                                    <th>Paid Amount</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthlyComparisonBody">
+                                <!-- Data will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section" id="excessAmountSection" style="display: none;">
+                    <h3>💚 Excess Amount Details</h3>
+                    <div class="excess-amount" id="excessAmountInfo">
+                        <!-- Excess amount details -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab (Admin) -->
+            <div id="reports" class="tab-content">
+                <div class="section">
+                    <h3>📊 Generate Reports</h3>
                     <div class="grid-2">
                         <button class="btn btn-primary" onclick="generateDefaultersList()">📋 Defaulters List</button>
-                        <button class="btn btn-primary" onclick="generateMonthlyReport()">📅 Monthly Collection Report</button>
+                        <button class="btn btn-primary" onclick="generateMonthlyReport()">📅 Monthly Collection</button>
                         <button class="btn btn-primary" onclick="generateChargesSummary()">💰 Charges Summary</button>
                         <button class="btn btn-success" onclick="exportAllData()">📥 Export All Data</button>
                     </div>
                 </div>
 
-                <div id="reportOutput" class="setup-section" style="display: none;">
+                <div id="reportOutput" class="section" style="display: none;">
                     <h3>Report Output</h3>
                     <div id="reportContent"></div>
+                </div>
+            </div>
+
+            <!-- Compare Charges (Member) -->
+            <div id="compareCharges" class="tab-content">
+                <div class="alert alert-info">
+                    <strong>Compare Your Charges:</strong> See how your monthly dues compare with other house types.
+                </div>
+
+                <div class="section">
+                    <h3>🔍 Charge Comparison by House Status</h3>
+                    <div class="table-container">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Charge Type</th>
+                                    <th>Occupied</th>
+                                    <th>Interior Ongoing</th>
+                                    <th>Empty</th>
+                                </tr>
+                            </thead>
+                            <tbody id="chargeComparisonBody">
+                                <!-- Comparison data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📊 My Charges Breakdown</h3>
+                    <div id="myChargesDetail"></div>
                 </div>
             </div>
         </div>
@@ -641,20 +1079,187 @@
 
     <script>
         // Configuration - REPLACE WITH YOUR WEB APP URL
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrc2c_oZpabJh9UhupoYpwkQrXbMcrfJRj41aoGRiXAWMRKD5CuEWvwjApmPd3qh7ZoQ/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbytaY2vg6YIOwY69l8uhg2f2TxR8722rVbMDhfHtF-2bHBKAUPru4lHaoxbHuEp8bh8Cg/exec';
         
-        // Configuration
-        let config = {
-            apiKey: '',
-            spreadsheetId: '',
-            webAppUrl: WEB_APP_URL
+        // Session Management
+        let currentUser = {
+            role: null,  // 'admin' or 'member'
+            houseNumber: null,
+            name: null,
+            isLoggedIn: false
         };
-        
+
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHsgY29uc29sZS5sb2coJ1NlcnZpY2UgV29ya2VyIGluc3RhbGxlZCcpOyB9KTsgc2VsZi5hZGRFdmVudExpc3RlbmVyKCdhY3RpdmF0ZScsIGZ1bmN0aW9uKGV2ZW50KSB7IGNvbnNvbGUubG9nKCdTZXJ2aWNlIFdvcmtlciBhY3RpdmF0ZWQnKTsgfSk7').catch(err => console.log('SW registration failed'));
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBanner').classList.add('show');
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                    document.getElementById('installBanner').classList.remove('show');
+                });
+            }
+        }
+
+        function dismissInstall() {
+            document.getElementById('installBanner').classList.remove('show');
+        }
+
+        // Login Functions
+        function switchLoginTab(tab) {
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'admin') {
+                document.getElementById('adminLogin').classList.remove('hidden');
+                document.getElementById('memberLogin').classList.add('hidden');
+            } else {
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('memberLogin').classList.remove('hidden');
+            }
+        }
+
+        async function adminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Simple authentication (in production, use secure backend)
+            if (username === 'admin' && password === 'admin123') {
+                currentUser = {
+                    role: 'admin',
+                    name: 'Administrator',
+                    isLoggedIn: true
+                };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showMainApp();
+            } else {
+                alert('❌ Invalid credentials! Try: admin / admin123');
+            }
+        }
+
+        async function memberLogin() {
+            const houseNumber = document.getElementById('memberHouseNumber').value.toUpperCase().trim();
+            const contact = document.getElementById('memberContact').value;
+
+            if (!houseNumber || !contact) {
+                alert('Please enter both house number and last 4 digits of contact');
+                return;
+            }
+
+            // Verify member exists
+            const member = await apiCall('getMember', { houseNumber: houseNumber });
+            
+            if (!member || member.error) {
+                alert('❌ House not found!');
+                return;
+            }
+
+            // Simple verification using last 4 digits
+            const memberContact = member.member.contact || '';
+            if (memberContact && memberContact.slice(-4) === contact) {
+                currentUser = {
+                    role: 'member',
+                    houseNumber: houseNumber,
+                    name: member.member.ownerName,
+                    isLoggedIn: true
+                };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showMainApp();
+            } else {
+                alert('❌ Invalid credentials! Please check your contact number.');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = { role: null, isLoggedIn: false };
+                localStorage.removeItem('currentUser');
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('mainApp').classList.add('hidden');
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            
+            // Update header
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = currentUser.role === 'admin' ? 'Administrator' : `Member - ${currentUser.houseNumber}`;
+            
+            // Load appropriate tabs
+            loadTabs();
+            
+            // Load initial data
+            loadDashboard();
+        }
+
+        function loadTabs() {
+            const navTabs = document.getElementById('navTabs');
+            navTabs.innerHTML = '';
+
+            if (currentUser.role === 'admin') {
+                navTabs.innerHTML = `
+                    <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+                    <button class="nav-tab" onclick="switchTab('userManagement')">👥 Users</button>
+                    <button class="nav-tab" onclick="switchTab('paymentManagement')">💳 Payments</button>
+                    <button class="nav-tab" onclick="switchTab('historicalData')">📅 History</button>
+                    <button class="nav-tab" onclick="switchTab('reports')">📋 Reports</button>
+                `;
+            } else {
+                navTabs.innerHTML = `
+                    <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+                    <button class="nav-tab" onclick="switchTab('myAccount')">🏠 My Account</button>
+                    <button class="nav-tab" onclick="switchTab('historicalData')">📅 History</button>
+                    <button class="nav-tab" onclick="switchTab('compareCharges')">🔍 Compare</button>
+                `;
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+
+            // Load tab-specific data
+            switch(tabName) {
+                case 'userManagement':
+                    loadAllUsers();
+                    break;
+                case 'paymentManagement':
+                    loadPaymentManagement();
+                    break;
+                case 'myAccount':
+                    loadMyAccount();
+                    break;
+                case 'historicalData':
+                    loadHistoricalData();
+                    break;
+                case 'compareCharges':
+                    loadChargeComparison();
+                    break;
+            }
+        }
+
         // API Helper Functions
         async function apiCall(action, params = {}, method = 'GET') {
             if (!WEB_APP_URL || WEB_APP_URL.includes('PASTE_YOUR')) {
                 console.error('Web App URL not configured');
-                alert('⚠️ Please configure your Google Apps Script Web App URL first!');
                 return null;
             }
             
@@ -684,118 +1289,202 @@
                 }
             } catch (error) {
                 console.error('API Error:', error);
-                alert('Error connecting to server. Please check your internet connection.');
                 return null;
             }
         }
 
-        // Load config from localStorage
-        function loadConfig() {
-            const saved = localStorage.getItem('apartmentConfig');
-            if (saved) {
-                config = JSON.parse(saved);
-                document.getElementById('apiKey').value = config.apiKey || '';
-                document.getElementById('spreadsheetId').value = config.spreadsheetId || '';
-            }
-        }
-
-        // Save configuration
-        function saveConfig() {
-            config.apiKey = document.getElementById('apiKey').value;
-            config.spreadsheetId = document.getElementById('spreadsheetId').value;
+        // Dashboard
+        async function loadDashboard() {
+            const stats = await apiCall('getStats');
             
-            if (!config.apiKey || !config.spreadsheetId) {
-                alert('Please enter both API Key and Spreadsheet ID');
-                return;
-            }
-            
-            localStorage.setItem('apartmentConfig', JSON.stringify(config));
-            alert('✅ Configuration saved successfully!');
-        }
-
-        // Tab switching
-        function switchTab(tabName) {
-            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        // Initialize members
-        async function initializeMembers() {
-            if (!WEB_APP_URL || WEB_APP_URL.includes('PASTE_YOUR')) {
-                alert('⚠️ Please configure your Google Apps Script Web App URL first in the code!');
-                return;
-            }
-
-            const occupied = parseInt(document.getElementById('occupiedHouses').value);
-            const interior = parseInt(document.getElementById('interiorHouses').value);
-
-            if (confirm(`This will create 53 house records with ${occupied} occupied and ${interior} interior ongoing. Continue?`)) {
-                const result = await apiCall('initializeMembers', {
-                    occupiedCount: occupied,
-                    interiorCount: interior
-                }, 'POST');
+            if (stats) {
+                const dashboardStats = document.getElementById('dashboardStats');
                 
-                if (result && result.success) {
-                    alert('✅ ' + result.message);
-                    // Save config
-                    localStorage.setItem('occupiedHouses', occupied);
-                    localStorage.setItem('interiorHouses', interior);
+                if (currentUser.role === 'admin') {
+                    dashboardStats.innerHTML = `
+                        <div class="stat-card">
+                            <h4>Total Houses</h4>
+                            <div class="value">${stats.totalHouses}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Collected</h4>
+                            <div class="value">₹${stats.totalCollected.toLocaleString('en-IN')}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Pending</h4>
+                            <div class="value">₹${stats.totalPending.toLocaleString('en-IN')}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Collection Rate</h4>
+                            <div class="value">${stats.collectionRate}%</div>
+                        </div>
+                    `;
                 } else {
-                    alert('❌ Failed to initialize members. Please check console for errors.');
+                    // Load member-specific stats
+                    const memberData = await apiCall('getMember', { houseNumber: currentUser.houseNumber });
+                    if (memberData && memberData.member) {
+                        const m = memberData.member;
+                        dashboardStats.innerHTML = `
+                            <div class="stat-card">
+                                <h4>Monthly Due</h4>
+                                <div class="value">₹${m.monthlyDue.toLocaleString('en-IN')}</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Total Paid</h4>
+                                <div class="value">₹${m.totalPaid.toLocaleString('en-IN')}</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Balance</h4>
+                                <div class="value">₹${m.balance.toLocaleString('en-IN')}</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Status</h4>
+                                <div class="value">${m.balance > 0 ? '❌ Due' : '✅ Paid'}</div>
+                            </div>
+                        `;
+                    }
                 }
             }
-        }
 
-        // Save monthly charges
-        function saveMonthlyCharges() {
-            const charges = {
-                meterCharges: parseFloat(document.getElementById('meterCharges').value),
-                sanitaryCharges: parseFloat(document.getElementById('sanitaryCharges').value),
-                otherCharges: parseFloat(document.getElementById('otherCharges').value),
-                borewellCharges: parseFloat(document.getElementById('borewellCharges').value),
-                securitySalary: parseFloat(document.getElementById('securitySalary').value),
-                commonPower: parseFloat(document.getElementById('commonPower').value),
-                waterCharges: parseFloat(document.getElementById('waterCharges').value),
-                dieselCharges: parseFloat(document.getElementById('dieselCharges').value)
-            };
-
-            localStorage.setItem('monthlyCharges', JSON.stringify(charges));
-            alert('✅ Monthly charges saved!');
-        }
-
-        // Calculate monthly due for a member
-        function calculateMonthlyDue(status) {
-            const charges = JSON.parse(localStorage.getItem('monthlyCharges') || '{}');
-            const occupied = parseInt(document.getElementById('occupiedHouses').value) || 12;
-            const interior = parseInt(document.getElementById('interiorHouses').value) || 0;
-            
-            // Fixed charges divided by 53
-            let total = (
-                (charges.meterCharges || 0) / 53 +
-                (charges.sanitaryCharges || 0) / 53 +
-                (charges.otherCharges || 0) / 53 +
-                (charges.borewellCharges || 0) / 53 +
-                (charges.securitySalary || 0) / 53 +
-                (charges.commonPower || 0) / 53
-            );
-
-            // Water charges - only for occupied and interior ongoing
-            if (status === 'Occupied' || status === 'Interior Ongoing') {
-                total += (charges.waterCharges || 0) / (occupied + interior);
+            // Quick Overview
+            const members = await apiCall('getAllMembers');
+            if (members) {
+                const quickOverview = document.getElementById('quickOverview');
+                const paidCount = members.filter(m => m.balance <= 0).length;
+                const pendingCount = members.filter(m => m.balance > 0).length;
                 
-                // Diesel - 70% for occupied/interior, 30% for others
-                total += ((charges.dieselCharges || 0) * 0.7) / (occupied + interior);
-            } else {
-                total += ((charges.dieselCharges || 0) * 0.3) / (53 - occupied - interior);
+                quickOverview.innerHTML = `
+                    <div class="stats-grid">
+                        <div style="background: #d4edda; padding: 20px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: #155724;">${paidCount}</div>
+                            <div style="color: #155724; margin-top: 5px;">✅ Paid Members</div>
+                        </div>
+                        <div style="background: #f8d7da; padding: 20px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 32px; font-weight: 700; color: #721c24;">${pendingCount}</div>
+                            <div style="color: #721c24; margin-top: 5px;">❌ Pending Members</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // User Management
+        async function loadAllUsers() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="loading"><div class="spinner"></div>Loading users...</td></tr>';
+            
+            const members = await apiCall('getAllMembers');
+            
+            if (!members || members.error) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: red;">Failed to load data</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            members.forEach(member => {
+                const paymentStatus = member.balance > 0 ? 'Pending' : 'Paid';
+                const statusClass = member.balance > 0 ? 'badge-danger' : 'badge-success';
+                
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td><strong>${member.houseNumber}</strong></td>
+                    <td>${member.ownerName}</td>
+                    <td>${member.contact || 'N/A'}</td>
+                    <td><span class="badge badge-info">${member.status}</span></td>
+                    <td><span class="badge ${statusClass}">${paymentStatus}</span></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick='editMember(${JSON.stringify(member)})'>✏️ Edit</button>
+                    </td>
+                `;
+            });
+
+            // Populate payment dropdown
+            const select = document.getElementById('paymentHouse');
+            select.innerHTML = '<option value="">Select House</option>';
+            members.forEach(member => {
+                select.innerHTML += `<option value="${member.houseNumber}">${member.houseNumber} - ${member.ownerName}</option>`;
+            });
+        }
+
+        function editMember(member) {
+            document.getElementById('editHouseNumber').value = member.houseNumber;
+            document.getElementById('editOwnerName').value = member.ownerName;
+            document.getElementById('editContact').value = member.contact || '';
+            document.getElementById('editEmail').value = member.email || '';
+            document.getElementById('editStatus').value = member.status;
+            
+            // Scroll to edit section
+            document.querySelector('#userManagement .section:last-child').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function saveMemberDetails() {
+            const houseNumber = document.getElementById('editHouseNumber').value;
+            const ownerName = document.getElementById('editOwnerName').value;
+            const contact = document.getElementById('editContact').value;
+            const email = document.getElementById('editEmail').value;
+            const status = document.getElementById('editStatus').value;
+
+            if (!houseNumber || !ownerName) {
+                alert('Please fill required fields');
+                return;
             }
 
-            return Math.round(total);
+            // In production, call API to update
+            alert('✅ Member details saved! (In production, this would update Google Sheets)');
+            cancelEdit();
+            loadAllUsers();
         }
 
-        // Record payment
+        function cancelEdit() {
+            document.getElementById('editHouseNumber').value = '';
+            document.getElementById('editOwnerName').value = '';
+            document.getElementById('editContact').value = '';
+            document.getElementById('editEmail').value = '';
+        }
+
+        function applyUserFilters() {
+            const searchTerm = document.getElementById('userSearchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('userFilterStatus').value;
+            const paymentFilter = document.getElementById('userFilterPayment').value;
+            
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const matchesSearch = text.includes(searchTerm);
+                const matchesStatus = !statusFilter || text.includes(statusFilter.toLowerCase());
+                const matchesPayment = !paymentFilter || text.includes(paymentFilter);
+                
+                row.style.display = (matchesSearch && matchesStatus && matchesPayment) ? '' : 'none';
+            });
+        }
+
+        // Payment Management
+        async function loadPaymentManagement() {
+            // Load stats
+            const stats = await apiCall('getStats');
+            if (stats) {
+                document.getElementById('thisMonthCollection').textContent = '₹' + stats.totalCollected.toLocaleString('en-IN');
+                document.getElementById('totalCollected').textContent = '₹' + stats.totalCollected.toLocaleString('en-IN');
+                document.getElementById('totalPending').textContent = '₹' + stats.totalPending.toLocaleString('en-IN');
+                document.getElementById('collectionRate').textContent = stats.collectionRate + '%';
+            }
+
+            // Load recent payments (mock data for now)
+            const tbody = document.getElementById('recentPaymentsBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td>${new Date().toLocaleDateString('en-IN')}</td>
+                    <td>H001</td>
+                    <td>Sample Owner</td>
+                    <td>₹1,500</td>
+                    <td>UPI</td>
+                    <td>January 2025</td>
+                </tr>
+            `;
+        }
+
         async function recordPayment() {
             const house = document.getElementById('paymentHouse').value;
             const amount = document.getElementById('paymentAmount').value;
@@ -823,191 +1512,204 @@
                 document.getElementById('paymentAmount').value = '';
                 document.getElementById('paymentNotes').value = '';
                 
-                // Refresh member list
-                loadAllMembers();
+                // Refresh
+                loadPaymentManagement();
             } else {
                 alert('❌ Failed to record payment. Please try again.');
             }
         }
 
-        // Load all members for admin
-        async function loadAllMembers() {
-            const tbody = document.getElementById('adminMembersBody');
-            tbody.innerHTML = '<tr><td colspan="7" class="loading"><div class="spinner"></div>Loading data...</td></tr>';
+        // My Account (Member)
+        async function loadMyAccount() {
+            const data = await apiCall('getMember', { houseNumber: currentUser.houseNumber });
             
-            const members = await apiCall('getAllMembers');
-            
-            if (!members || members.error) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: #dc3545;">Failed to load data. Please check your configuration.</td></tr>';
-                return;
+            if (data && data.member) {
+                const m = data.member;
+                const payments = data.payments || [];
+                
+                // Account details
+                document.getElementById('memberAccountDetails').innerHTML = `
+                    <div class="grid-2">
+                        <div>
+                            <p><strong>House Number:</strong> ${m.houseNumber}</p>
+                            <p><strong>Owner Name:</strong> ${m.ownerName}</p>
+                            <p><strong>Contact:</strong> ${m.contact || 'Not provided'}</p>
+                        </div>
+                        <div>
+                            <p><strong>Email:</strong> ${m.email || 'Not provided'}</p>
+                            <p><strong>Status:</strong> <span class="badge badge-info">${m.status}</span></p>
+                        </div>
+                    </div>
+                `;
+
+                // Current charges
+                const charges = await apiCall('getCharges');
+                let breakdown = '<table style="width:100%; font-size: 14px;">';
+                breakdown += '<tr><th>Charge Type</th><th style="text-align:right;">Your Amount</th></tr>';
+                
+                if (charges) {
+                    charges.forEach(charge => {
+                        let perHouse = calculateChargePerHouse(charge, m.status);
+                        if (perHouse > 0) {
+                            breakdown += `<tr><td>${charge.chargeType}</td><td style="text-align:right;">₹${Math.round(perHouse)}</td></tr>`;
+                        }
+                    });
+                }
+                
+                breakdown += `<tr style="font-weight:bold; border-top: 2px solid #333;"><td>Total Monthly Due</td><td style="text-align:right;">₹${m.monthlyDue}</td></tr>`;
+                breakdown += '</table>';
+                document.getElementById('currentChargesBreakdown').innerHTML = breakdown;
+
+                // Payment summary
+                document.getElementById('myMonthlyDue').textContent = '₹' + m.monthlyDue.toLocaleString('en-IN');
+                document.getElementById('myTotalPaid').textContent = '₹' + m.totalPaid.toLocaleString('en-IN');
+                document.getElementById('myBalance').textContent = '₹' + Math.abs(m.balance).toLocaleString('en-IN');
+
+                // Check for excess
+                if (m.balance < 0) {
+                    document.getElementById('excessCard').style.display = 'block';
+                    document.getElementById('myExcess').textContent = '₹' + Math.abs(m.balance).toLocaleString('en-IN');
+                }
             }
+        }
+
+        function calculateChargePerHouse(charge, status) {
+            const occupied = parseInt(localStorage.getItem('occupiedHouses') || 12);
+            const interior = parseInt(localStorage.getItem('interiorHouses') || 0);
             
-            tbody.innerHTML = '';
+            if (charge.splitType === 'All 53') {
+                return charge.amount / 53;
+            } else if (charge.splitType === 'Occupied+Interior') {
+                if (status === 'Occupied' || status === 'Interior Ongoing') {
+                    return charge.amount / (occupied + interior);
+                }
+                return 0;
+            } else if (charge.splitType === 'Special') {
+                if (status === 'Occupied' || status === 'Interior Ongoing') {
+                    return (charge.amount * 0.7) / (occupied + interior);
+                } else {
+                    return (charge.amount * 0.3) / (53 - occupied - interior);
+                }
+            }
+            return 0;
+        }
+
+        // Historical Data
+        async function loadHistoricalData() {
+            const houseNumber = currentUser.role === 'member' ? currentUser.houseNumber : null;
             
-            members.forEach(member => {
-                const row = tbody.insertRow();
+            // Mock historical data - in production, fetch from backend
+            const timeline = document.getElementById('paymentTimeline');
+            timeline.innerHTML = `
+                <div class="timeline-item">
+                    <h4>January 2025</h4>
+                    <p>Payment: ₹1,500 | Status: <span class="status-paid">Paid</span></p>
+                    <small>Paid on: 05-Jan-2025 via UPI</small>
+                </div>
+                <div class="timeline-item">
+                    <h4>December 2024</h4>
+                    <p>Payment: ₹1,500 | Status: <span class="status-paid">Paid</span></p>
+                    <small>Paid on: 02-Dec-2024 via Cash</small>
+                </div>
+                <div class="timeline-item">
+                    <h4>November 2024</h4>
+                    <p>Payment: ₹1,500 | Status: <span class="status-paid">Paid</span></p>
+                    <small>Paid on: 01-Nov-2024 via Online Transfer</small>
+                </div>
+            `;
+
+            // Monthly comparison
+            const comparisonBody = document.getElementById('monthlyComparisonBody');
+            const months = ['January 2025', 'December 2024', 'November 2024', 'October 2024'];
+            comparisonBody.innerHTML = '';
+            
+            months.forEach(month => {
+                const row = comparisonBody.insertRow();
                 row.innerHTML = `
-                    <td>${member.houseNumber}</td>
-                    <td>${member.ownerName}</td>
-                    <td>${member.status}</td>
-                    <td>₹${member.monthlyDue.toLocaleString('en-IN')}</td>
-                    <td>₹${member.totalPaid.toLocaleString('en-IN')}</td>
-                    <td>₹${member.balance.toLocaleString('en-IN')}</td>
-                    <td class="${member.balance > 0 ? 'status-pending' : 'status-paid'}">
-                        ${member.balance > 0 ? 'Pending' : 'Paid'}
-                    </td>
+                    <td>${month}</td>
+                    <td>₹1,500</td>
+                    <td>₹1,500</td>
+                    <td>₹0</td>
+                    <td><span class="badge badge-success">Paid</span></td>
                 `;
             });
-
-            // Populate house dropdown
-            const select = document.getElementById('paymentHouse');
-            select.innerHTML = '<option value="">Select House</option>';
-            members.forEach(member => {
-                select.innerHTML += `<option value="${member.houseNumber}">${member.houseNumber} - ${member.ownerName}</option>`;
-            });
-            
-            // Update stats
-            updateStats(members);
-        }
-        
-        // Update statistics
-        function updateStats(members) {
-            const totalHouses = members.length;
-            const totalCollected = members.reduce((sum, m) => sum + m.totalPaid, 0);
-            const totalPending = members.reduce((sum, m) => sum + m.balance, 0);
-            const totalDue = members.reduce((sum, m) => sum + m.monthlyDue, 0);
-            const collectionRate = totalDue > 0 ? ((totalCollected / totalDue) * 100).toFixed(1) : 0;
-            
-            document.getElementById('totalHouses').textContent = totalHouses;
-            document.getElementById('totalCollected').textContent = '₹' + totalCollected.toLocaleString('en-IN');
-            document.getElementById('totalPending').textContent = '₹' + totalPending.toLocaleString('en-IN');
-            document.getElementById('collectionRate').textContent = collectionRate + '%';
         }
 
-        // Search member
-        async function searchMember() {
-            const houseNum = document.getElementById('searchHouse').value.toUpperCase().trim();
-            
-            if (!houseNum) {
-                alert('Please enter a house number!');
-                return;
-            }
-
-            // Show loading
-            document.getElementById('memberDetails').style.display = 'block';
-            document.getElementById('chargesBreakdown').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
-            
-            const data = await apiCall('getMember', { houseNumber: houseNum });
-            
-            if (!data || data.error) {
-                alert('Member not found or error occurred!');
-                document.getElementById('memberDetails').style.display = 'none';
-                return;
-            }
-            
-            const member = data.member;
-            const payments = data.payments;
-            
-            // Display member info
-            document.getElementById('memberHouseNum').textContent = member.houseNumber;
-            document.getElementById('memberOwner').textContent = member.ownerName;
-            document.getElementById('memberStatus').textContent = member.status;
-            document.getElementById('memberContact').textContent = member.contact || 'Not provided';
-            document.getElementById('memberMonthlyDue').textContent = member.monthlyDue.toLocaleString('en-IN');
-            document.getElementById('memberTotalPaid').textContent = member.totalPaid.toLocaleString('en-IN');
-            
-            const balanceText = member.balance > 0 
-                ? `₹${member.balance.toLocaleString('en-IN')} (Pending)` 
-                : '₹0 (Fully Paid)';
-            document.getElementById('memberBalance').innerHTML = `<span class="${member.balance > 0 ? 'status-pending' : 'status-paid'}">${balanceText}</span>`;
-            
-            // Show charges breakdown
+        // Charge Comparison
+        async function loadChargeComparison() {
             const charges = await apiCall('getCharges');
-            let breakdown = '<table style="width:100%; font-size: 14px;">';
-            breakdown += '<tr><th style="text-align:left;">Charge Type</th><th style="text-align:right;">Amount</th></tr>';
             
-            if (charges && charges.length > 0) {
+            if (charges) {
+                const tbody = document.getElementById('chargeComparisonBody');
+                tbody.innerHTML = '';
+                
                 charges.forEach(charge => {
-                    let perHouse = 0;
-                    if (charge.splitType === 'All 53') {
-                        perHouse = charge.amount / 53;
-                    } else if (charge.splitType === 'Occupied+Interior') {
-                        const occupied = parseInt(localStorage.getItem('occupiedHouses') || 12);
-                        const interior = parseInt(localStorage.getItem('interiorHouses') || 0);
-                        if (member.status === 'Occupied' || member.status === 'Interior Ongoing') {
-                            perHouse = charge.amount / (occupied + interior);
-                        }
-                    } else if (charge.splitType === 'Special') {
-                        // Diesel special calculation
-                        const occupied = parseInt(localStorage.getItem('occupiedHouses') || 12);
-                        const interior = parseInt(localStorage.getItem('interiorHouses') || 0);
-                        if (member.status === 'Occupied' || member.status === 'Interior Ongoing') {
-                            perHouse = (charge.amount * 0.7) / (occupied + interior);
-                        } else {
-                            perHouse = (charge.amount * 0.3) / (53 - occupied - interior);
-                        }
-                    }
+                    const occupiedCharge = calculateChargePerHouse(charge, 'Occupied');
+                    const interiorCharge = calculateChargePerHouse(charge, 'Interior Ongoing');
+                    const emptyCharge = calculateChargePerHouse(charge, 'Empty');
                     
-                    if (perHouse > 0) {
-                        breakdown += `<tr><td>${charge.chargeType}</td><td style="text-align:right;">₹${Math.round(perHouse)}</td></tr>`;
-                    }
-                });
-            }
-            
-            breakdown += `<tr style="font-weight:bold; border-top: 2px solid #333;"><td>Total</td><td style="text-align:right;">₹${member.monthlyDue}</td></tr>`;
-            breakdown += '</table>';
-            
-            document.getElementById('chargesBreakdown').innerHTML = breakdown;
-            
-            // Payment history
-            let historyHTML = '';
-            if (payments && payments.length > 0) {
-                payments.forEach(payment => {
-                    historyHTML += `
-                        <div class="payment-record">
-                            <div>
-                                <strong>${payment.notes || 'Payment'}</strong><br>
-                                <small>Date: ${new Date(payment.date).toLocaleDateString('en-IN')} | Mode: ${payment.mode}</small>
-                            </div>
-                            <div style="text-align: right;">
-                                <strong style="color: #28a745;">₹${payment.amount.toLocaleString('en-IN')}</strong>
-                            </div>
-                        </div>
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${charge.chargeType}</td>
+                        <td>₹${Math.round(occupiedCharge)}</td>
+                        <td>₹${Math.round(interiorCharge)}</td>
+                        <td>₹${Math.round(emptyCharge)}</td>
                     `;
                 });
-            } else {
-                historyHTML = '<p style="color: #999;">No payment history available</p>';
+
+                // Highlight current user's row
+                if (currentUser.role === 'member') {
+                    const memberData = await apiCall('getMember', { houseNumber: currentUser.houseNumber });
+                    // Add highlighting logic based on status
+                }
             }
-            
-            document.getElementById('paymentHistory').innerHTML = historyHTML;
+
+            // My charges detail
+            if (currentUser.role === 'member') {
+                const data = await apiCall('getMember', { houseNumber: currentUser.houseNumber });
+                if (data && data.member) {
+                    document.getElementById('myChargesDetail').innerHTML = `
+                        <div class="alert alert-info">
+                            <p><strong>Your house status:</strong> ${data.member.status}</p>
+                            <p><strong>Your monthly due:</strong> ₹${data.member.monthlyDue.toLocaleString('en-IN')}</p>
+                            <p>The charges vary based on house occupancy status. Occupied and Interior Ongoing houses pay for water charges and higher diesel contribution.</p>
+                        </div>
+                    `;
+                }
+            }
         }
 
-        // Export functions
-        function exportToExcel() {
-            alert('Export feature will download all member data as Excel file');
-        }
-
+        // Reports
         function generateDefaultersList() {
-            alert('This will generate a list of members with pending payments');
+            alert('Generating defaulters list...');
         }
 
         function generateMonthlyReport() {
-            alert('This will generate monthly collection summary');
+            alert('Generating monthly report...');
         }
 
         function generateChargesSummary() {
-            alert('This will generate detailed charges breakdown');
+            alert('Generating charges summary...');
         }
 
         function exportAllData() {
-            alert('This will export complete database to Excel');
+            alert('Exporting all data to Excel...');
         }
 
-        // Set today's date as default
-        document.getElementById('paymentDate').valueAsDate = new Date();
+        // Initialize
+        window.addEventListener('load', () => {
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                if (currentUser.isLoggedIn) {
+                    showMainApp();
+                }
+            }
 
-        // Load config on page load
-        loadConfig();
+            // Set today's date as default
+            document.getElementById('paymentDate').valueAsDate = new Date();
+        });
     </script>
 </body>
 </html>
